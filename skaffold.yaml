@@ -1,0 +1,32 @@
+apiVersion: skaffold/v2beta11
+kind: Config
+build:
+  artifacts:
+  - image: ghcr.io/shipperizer/vigilant-engine
+    sync:
+      infer:
+      - "cmd/app/main.go"
+      - "go.mod"
+      - "go.sum"
+    custom:
+      buildCommand: ./buildx.sh
+      dependencies:
+        dockerfile:
+          path: Dockerfile
+          buildArgs:
+            app_name: app
+
+deploy:
+  kustomize:
+    paths:
+      - "deployments/kustomize"
+
+profiles:
+- name: cert-manager
+  patches:
+    - op: remove
+      path: /deploy/kustomize
+  deploy:
+    kubectl:
+      manifests:
+        - "deployments/deps/cert-manager/*.yaml"
