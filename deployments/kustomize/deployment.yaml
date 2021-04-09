@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vigilant-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vigilant-engine
+  template:
+    metadata:
+      labels:
+        app: vigilant-engine
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+    spec:
+      containers:
+      - image: ghcr.io/shipperizer/vigilant-engine
+        name: vigilant-engine
+        envFrom:
+          - configMapRef:
+              name: vigilant-engine
+        env:
+        - name: DNS_RECORD
+          valueFrom:
+            secretKeyRef:
+              name: vigilant-engine
+              key: DNS_RECORD
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vigilant-engine
+              key: PASSWORD
+        - name: USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: vigilant-engine
+              key: USERNAME
+        # TODO @shipperizer add health check endpoint      
+        # readinessProbe:
+        #   httpGet:
+        #     path: "/api/v0/status"
+        #     port: 8000
+        #   initialDelaySeconds: 5
+        #   failureThreshold: 10
+        #   timeoutSeconds: 5
+        #   periodSeconds: 30
+        # livenessProbe:
+        #   httpGet:
+        #     path: "/api/v0/status"
+        #     port: 8000
+        #   initialDelaySeconds: 5
+        #   failureThreshold: 10
+        #   timeoutSeconds: 5
+        #   periodSeconds: 30
+      imagePullSecrets:
+      - name: regcred-github
