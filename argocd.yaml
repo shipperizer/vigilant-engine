@@ -3,10 +3,10 @@ kind: Application
 metadata:
   annotations:
     argocd-image-updater.argoproj.io/git-branch: main
-    argocd-image-updater.argoproj.io/image-list: vigilant-engine=ghcr.io/shipperizer/vigilant-engine-app
+    argocd-image-updater.argoproj.io/image-list: vigilant-engine=ghcr.io/shipperizer/vigilant-engine
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/repo-953774906
     argocd-image-updater.argoproj.io/vigilant-engine.pull-secret: pullsecret:argocd/regcred-github
-    argocd-image-updater.argoproj.io/vigilant-engine.kustomize.image-name: ghcr.io/shipperizer/vigilant-engine-app
+    argocd-image-updater.argoproj.io/vigilant-engine.kustomize.image-name: ghcr.io/shipperizer/vigilant-engine
     argocd-image-updater.argoproj.io/vigilant-engine.allow-tags: regexp:^v[0-9]+.[0-9]+.*
   name: vigilant-engine
   namespace: argocd
