@@ -5,17 +5,17 @@ LABEL org.opencontainers.image.source=https://github.com/shipperizer/vigilant-en
 ARG SKAFFOLD_GO_GCFLAGS
 ARG TARGETOS
 ARG TARGETARCH
-ARG app_name=kafka
+ARG app_name=app
 
 ENV GOOS=$TARGETOS
 ENV GOARCH=$TARGETARCH
 ENV GO111MODULE=on
 ENV CGO_ENABLED=0
 ENV GO_BIN=/go/bin/app
-ENV GRPC_HEALTH_PROBE_VERSION=v0.1.0-alpha.1
+ENV GRPC_HEALTH_PROBE_VERSION=v0.3.6
 RUN apt-get update
 RUN apt-get install -y awscli
-RUN wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+RUN wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-${GOOS}-${GOARCH} && \
   chmod +x /bin/grpc_health_probe
 
 RUN go env

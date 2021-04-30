@@ -30,3 +30,17 @@ profiles:
     kubectl:
       manifests:
         - "deployments/deps/cert-manager/*.yaml"
+- name: kaniko
+  build:
+    artifacts:
+    - image: ghcr.io/shipperizer/vigilant-engine-app
+      kaniko:
+        image: gcr.io/kaniko-project/executor:arm64
+        initImage: docker.io/busybox:stable
+        buildArgs:
+          TARGETOS: linux
+          TARGETARCH: arm64
+    cluster:
+      randomDockerConfigSecret: true
+      dockerConfig:
+        secretName: regcred-github-kaniko
