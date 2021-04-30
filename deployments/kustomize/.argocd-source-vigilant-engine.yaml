@@ -1,0 +1,3 @@
+kustomize:
+  images:
+  - ghcr.io/shipperizer/vigilant-engine=ghcr.io/shipperizer/vigilant-engine:v1.0.0
